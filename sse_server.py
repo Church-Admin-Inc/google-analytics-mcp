@@ -3,6 +3,7 @@ from starlette.applications import Starlette
 from starlette.routing import Route
 from mcp.server.sse import SseServerTransport
 from mcp.server.models import InitializationOptions
+from mcp.server.lowlevel import NotificationOptions  # <-- ADDED IMPORT
 import analytics_mcp.coordinator as coordinator
 
 sse = SseServerTransport("/messages")
@@ -17,7 +18,7 @@ async def handle_sse(request):
                 server_name="analytics-mcp-cloud",
                 server_version="1.0.0",
                 capabilities=coordinator.app.get_capabilities(
-                    notification_options=None,
+                    notification_options=NotificationOptions(), # <-- FIXED THIS LINE
                     experimental_capabilities={},
                 ),
             )
