@@ -1,0 +1,37 @@
+name: Sync with Upstream Repository
+
+on:
+  schedule:
+    # Run this workflow once a week on Sunday at midnight
+    - cron: "0 0 * * 0"
+  workflow_dispatch: # Allows you to run this manually from the Actions tab!
+
+permissions:
+  contents: write # Explicitly grant permission to push changes
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout the repository
+      uses: actions/checkout@v4 # Updated to the latest version
+      with:
+        fetch-depth: 0 # CRITICAL: Fetches all history for all branches and tags
+        
+    - name: Configure git
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+
+    - name: Add upstream repository
+      run: git remote add upstream https://github.com/googleanalytics/google-analytics-mcp.git
+
+    - name: Fetch upstream changes
+      run: git fetch upstream
+
+    - name: Merge upstream main branch
+      run: git merge upstream/main --no-edit
+
+    - name: Push changes to origin
+      run: git push origin main
