@@ -79,7 +79,6 @@ async def lifespan(app):
 app = Starlette(
     routes=[
         Route("/", health),
-        Route("/healthz", health),
         Route("/mcp", endpoint=mcp_app, methods=["GET", "POST", "DELETE"]),
     ],
     lifespan=lifespan,
