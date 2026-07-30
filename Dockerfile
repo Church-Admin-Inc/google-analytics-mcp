@@ -5,4 +5,4 @@ WORKDIR /app
 COPY . /app/
 RUN pip install --no-cache-dir -e .
 EXPOSE 8080
-CMD ["python", "sse_server.py"]
+CMD ["python", "http_server.py"]
